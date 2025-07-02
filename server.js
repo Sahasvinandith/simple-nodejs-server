@@ -1,17 +1,23 @@
-const express = require('express'); // Import the express library
-const app = express(); // Create an instance of the express application
-const cors = require('cors')
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 8080; // This is the crucial line for port
 
-app.use(cors());
-
-const port = 3000; // Define the port number the server will listen on
-
-// Define a route for the root URL ("/")
 app.get('/', (req, res) => {
-  res.send('Hello from sahas\'s simple Express.js server!');
+  res.send('Hello from OpenShift Node.js App!');
 });
 
-// Start the server and listen for incoming requests
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+// The change is here: listen on '0.0.0.0' for all interfaces
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server listening on http://0.0.0.0:${port}`);
+  // You can also log process.env.PORT to confirm what it gets
+  console.log(`Process.env.PORT is: ${process.env.PORT}`);
+});
+
+// Optional: Basic error handling for robustness
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+process.on('uncaughtException', error => {
+  console.error('Uncaught Exception:', error);
+  process.exit(1);
 });
