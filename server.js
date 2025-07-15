@@ -7,11 +7,11 @@ app.get('/', (req, res) => {
 });
 
 // The change is here: listen on '0.0.0.0' for all interfaces
-const server = app.listen(port, '0.0.0.0', () => {
-  console.log(`Server listening on http://0.0.0.0:${port}`);
-  // You can also log process.env.PORT to confirm what it gets
-  console.log(`Process.env.PORT is: ${process.env.PORT}`);
-});
+if (require.main === module) {
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Server listening on http://0.0.0.0:${port}`);
+  });
+}
 
 module.exports = app; // Export the app for testing
 
